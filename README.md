@@ -33,7 +33,9 @@ points for each.
 There will not be a project presentation.
 Each team is responsible for sending following items for final project:
 o Project report (File name should be Coursenumber-Teamnumber-ProjectTitle.pdf. Example: CS6314.001-Team4-OnlinePizzaOrders.pdf)
+
 o Source files (zip your home directory for your project)
+
 o Video recording of your website’s demo. In the video, you will walk viewers through all main functions of the website. The video should be between 3-5
   minutes long.
 
