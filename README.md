@@ -1,4 +1,4 @@
-# online-furniture-store
+# Online-furniture-store (Replace it with any name )
 
 ## Requirement:
 
