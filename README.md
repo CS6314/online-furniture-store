@@ -40,3 +40,5 @@ o Video recording of your website’s demo. In the video, you will walk viewers 
   minutes long.
 
 ## Due date for project submission is May 9, 2021, 11:59 PM.
+
+Sample changes
