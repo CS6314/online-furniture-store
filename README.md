@@ -1,5 +1,33 @@
-# Online-furniture-store ( Replace it with any name )
+# Online-furniture-store 
 
+## Folder structure
+
+└── Online-furniture-store
+    ├── webApp
+    │   ├── __init__.py
+    │   ├── admin
+    │   │   ├── __init__.py
+    │   │   ├── endpoints.py
+    │   │   └── templates
+    │   ├── auth
+    │   │   ├── __init__.py
+    │   │   ├── endpoints.py
+    │   │   └── templates
+    │   ├── home
+    │   │   ├── __init__.py
+    │   │   └── endpoints.py
+    |   |   └── templates
+    │   ├── error
+    │   │   ├── __init__.py
+    │   │   └── endpoints.py
+    |   |   └── templates
+    │   ├── static
+    │   └── templates
+    ├── config.py
+    ├── requirements.txt
+    └── run.py
+
+  # Don't pollute the folder structure
 ## Requirement:
 
 1. Each project should include following major functionalities:
