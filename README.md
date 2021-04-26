@@ -1,7 +1,7 @@
 # Online-furniture-store 
 
 ## Folder structure
-
+```
 └── Online-furniture-store
     ├── webApp
     │   ├── __init__.py
@@ -26,7 +26,7 @@
     ├── config.py
     ├── requirements.txt
     └── run.py
-
+```
   # Don't pollute the folder structure
 ## Requirement:
 
