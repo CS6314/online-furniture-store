@@ -1,6 +1,4 @@
-# Online-furniture-store 
-
-## Folder structure
+## Folder structure (Don't pollute the folder structure)
 ```
 └── Online-furniture-store
     ├── webApp
@@ -27,7 +25,6 @@
     ├── requirements.txt
     └── run.py
 ```
-  # Don't pollute the folder structure
 ## Requirement:
 
 1. Each project should include following major functionalities:
