@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, json, redirect
 from flaskext.mysql import MySQL
 import views 
 from flask import session
+import os
 
 
 app = Flask(__name__)
@@ -10,9 +11,9 @@ app = Flask(__name__)
 mysql = MySQL()
 
 # MySQL configurations
-app.config['MYSQL_DATABASE_PASSWORD'] = 'akash123'
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'flask_todo_list'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
+app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_PORT'] = 3306
 mysql.init_app(app)
@@ -31,6 +32,17 @@ def main():
 def showSignUp():
     return render_template('login-register.html')
 
+@app.route('/cart')
+def showCart():
+    return render_template('cart.html')
+
+@app.route('/allProducts')
+def allProducts():
+    return render_template('all-products.html')
+
+@app.route('/addProduct')
+def addProduct():
+    return render_template('add-product.html')
 
 @app.route('/showSignin')
 def showSignin():
@@ -71,6 +83,178 @@ def showAddItem():
  #
  #  Validate login end point
  #
+@app.route('/getCart',methods=['GET'])
+def getCart():
+    try:
+        _user = session.get('user')
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.execute("SELECT p.product_id,p.title,p.description,p.image_name,c.quantity,p.quantity,p.price FROM product p , cart c WHERE p.product_id = c.product_id")
+        data = cursor.fetchall()
+        if len(data) > 0:
+            return json.dumps(data)
+        else:
+            return json.dumps({'html':'<span> Cart Empty for User </span>'})
+    
+    except Exception as e:
+            return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+@app.route('/getProducts',methods=['GET'])
+def getProducts():
+    try:
+        _user = session.get('user')
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM product p")
+        data = cursor.fetchall()
+        if len(data) > 0:
+            return json.dumps(data)
+        else:
+            return json.dumps({'html':'<span> No Products in the database </span>'})
+    
+    except Exception as e:
+            return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+@app.route('/editProduct',methods=['POST'])
+def editProduct():
+    try :
+        _productId = request.form['productId']
+        _productName = request.form['productName']
+        _productDescription = request.form['productDescription']
+        _price = request.form['price']
+        _quantity = request.form['quantity']
+        _category = request.form['category']
+        _isDeleted = request.form['isDeleted']
+        
+        print(_productId,_productName,_productDescription,_price,_quantity,_category,_isDeleted)
+        
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        if 'image' in request.files:
+            dirname = os.path.dirname(__file__)
+            filename = os.path.join(dirname, 'static\images\product')
+            _imageFile = request.files['image']
+            _imageFileName = _imageFile.filename
+            # ***TODO SAVE FILE TO FOLDER ON SERVER***
+            # _imageFile.save(dirname, _imageFileName)
+            
+            
+            # validate the received values
+        if _productId :
+            print("before sql")
+            if _imageFileName:
+                cursor.execute("UPDATE  product SET title = %s, description =%s, image_name = %s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription, _imageFileName,_price,_quantity,_category,_isDeleted,_productId))
+            else :
+                cursor.execute("UPDATE  product SET title = %s, description =%s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription,_price,_quantity,_category,_isDeleted,_productId))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                conn.commit()
+                return redirect('/allProducts')
+            else:
+                return json.dumps({'error':str(data[0])})
+        else:
+            return json.dumps({'html':'<span> Product ID not recieved</span>'})
+    except Exception as e:
+        return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/saveNewProduct',methods=['POST'])
+def saveNewProduct():
+    try :
+        _productName = request.form['productName']
+        _productDescription = request.form['productDescription']
+        _price = request.form['price']
+        _quantity = request.form['quantity']
+        _category = request.form['category']
+        _isDeleted = request.form['isDeleted']
+        
+        print(_productName,_productDescription,_price,_quantity,_category,_isDeleted)
+        
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        if 'image' in request.files:
+            dirname = os.path.dirname(__file__)
+            filename = os.path.join(dirname, 'static\images\product')
+            _imageFile = request.files['image']
+            _imageFileName = _imageFile.filename
+            # ***TODO SAVE FILE TO FOLDER ON SERVER***
+            # _imageFile.save(dirname, _imageFileName)
+            
+            
+            # validate the received values
+        
+        print("before sql")
+        cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)", (_productName, _productDescription, _imageFileName,_price,_quantity,_category,_isDeleted,))
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()
+            return redirect('/allProducts')
+        else:
+            return json.dumps({'error':str(data[0])})
+    except Exception as e:
+        return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/deleteProductFromCart',methods=['POST'])
+def deleteProductFromCart():
+    try :
+        con = mysql.connect()
+        cursor = con.cursor()
+        # read the posted values from the UI
+        requestBody = request.get_json()
+        _productId = requestBody['productId']        
+        # validate the received values
+        if _productId :
+            cursor.execute("DELETE FROM cart WHERE product_id = %s", (_productId))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                con.commit()
+                return json.dumps({'delete':'successful'})
+            else:
+                return json.dumps({'error':str(data[0])})
+        else:
+            return json.dumps({'html':'<span> Product ID to from Cart not received. </span>'})
+    except Exception as e:
+        return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+@app.route('/increaseProductQuantityInCart',methods=['POST'])
+def increaseProductQuantityInCart():
+    try :
+        con = mysql.connect()
+        cursor = con.cursor()
+        # read the posted values from the UI
+        requestBody = request.get_json()
+        _productId = requestBody['productId']
+        _quantity = requestBody['quantity']        
+        # validate the received values
+        if _productId and _quantity:
+            cursor.execute("UPDATE CART SET QUANTITY = %s WHERE product_id = %s", (_quantity,_productId))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                con.commit()
+                return json.dumps({'update':'successful'})
+            else:
+                return json.dumps({'error':str(data[0])})
+        else:
+            return json.dumps({'html':'<span> Product ID or Quanity to change from cart not received. </span>'})
+    except Exception as e:
+        return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        con.close()
 
 
 @app.route('/validateLogin', methods=['POST'])

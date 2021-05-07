@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     
 
@@ -32,6 +32,8 @@
 
     <!-- Modernizr JS -->
     <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/cart.js"></script>
 </head>
 
 <body>
@@ -50,7 +52,7 @@
                         <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3">
                             <div class="logo">
                                 <a href="index.html">
-                                    <img src="images/logo/logo.png" alt="logo">
+                                    <img src="/static/images/logo/logo.png" alt="logo">
                                 </a>
                             </div>
                         </div>
@@ -93,7 +95,7 @@
                                                     <li>
                                                         <div class="mega-item-img">
                                                             <a href="shop.html">
-                                                                <img src="images/feature-img/3.png" alt="">
+                                                                <img src="/static/images/feature-img/3.png" alt="">
                                                             </a>
                                                         </div>
                                                     </li>
@@ -163,7 +165,7 @@
                             <ul class="menu-extra">
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
                                 <li><a href="login-register.html"><span class="ti-user"></span></a></li>
-                                <li class="cart__menu"><span class="ti-shopping-cart"></span></li>
+                                <li><a href="/cart"><span class="ti-shopping-cart"></span></a></span></li>
                                 <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                             </ul>
                         </div>
@@ -206,20 +208,20 @@
                     <div class="off__contact">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="images/logo/logo.png" alt="logo">
+                                <img src="/static/images/logo/logo.png" alt="logo">
                             </a>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetu adipisicing elit sed do eiusmod tempor incididunt ut labore.</p>
                     </div>
                     <ul class="sidebar__thumd">
-                        <li><a href="#"><img src="images/sidebar-img/1.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/2.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/3.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/4.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/5.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/6.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/7.jpg" alt="sidebar images"></a></li>
-                        <li><a href="#"><img src="images/sidebar-img/8.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/1.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/2.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/3.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/4.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/5.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/6.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/7.jpg" alt="sidebar images"></a></li>
+                        <li><a href="#"><img src="/static/images/sidebar-img/8.jpg" alt="sidebar images"></a></li>
                     </ul>
                     <div class="offset__widget">
                         <div class="offset__single">
@@ -256,70 +258,16 @@
                 </div>
             </div>
             <!-- End Offset MEnu -->
-            <!-- Start Cart Panel -->
-            <div class="shopping__cart">
-                <div class="shopping__cart__inner">
-                    <div class="offsetmenu__close__btn">
-                        <a href="#"><i class="zmdi zmdi-close"></i></a>
-                    </div>
-                    <div class="shp__cart__wrap">
-                        <div class="shp__single__product">
-                            <div class="shp__pro__thumb">
-                                <a href="#">
-                                    <img src="images/product/sm-img/1.jpg" alt="product images">
-                                </a>
-                            </div>
-                            <div class="shp__pro__details">
-                                <h2><a href="product-details.html">BO&Play Wireless Speaker</a></h2>
-                                <span class="quantity">QTY: 1</span>
-                                <span class="shp__price">$105.00</span>
-                            </div>
-                            <div class="remove__btn">
-                                <a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
-                            </div>
-                        </div>
-                        <div class="shp__single__product">
-                            <div class="shp__pro__thumb">
-                                <a href="#">
-                                    <img src="images/product/sm-img/2.jpg" alt="product images">
-                                </a>
-                            </div>
-                            <div class="shp__pro__details">
-                                <h2><a href="product-details.html">Brone Candle</a></h2>
-                                <span class="quantity">QTY: 1</span>
-                                <span class="shp__price">$25.00</span>
-                            </div>
-                            <div class="remove__btn">
-                                <a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="shoping__total">
-                        <li class="subtotal">Subtotal:</li>
-                        <li class="total__price">$130.00</li>
-                    </ul>
-                    <ul class="shopping__btn">
-                        <li><a href="cart.html">View Cart</a></li>
-                        <li class="shp__checkout"><a href="checkout.html">Checkout</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- End Cart Panel -->
         </div>
         <!-- End Offset Wrapper -->
         <!-- Start Bradcaump area -->
-        <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/2.jpg) no-repeat scroll center center / cover ;">
+        <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/static/images/bg/2.jpg) no-repeat scroll center center / cover ;">
             <div class="ht__bradcaump__wrap">
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="bradcaump__inner text-center">
-                                <h2 class="bradcaump-title">Cart</h2>
-                                <nav class="bradcaump-inner">
-                                  <a class="breadcrumb-item" href="index.html">Home</a>
-                                  <span class="brd-separetor">/</span>
-                                  <span class="breadcrumb-item active">Cart</span>
-                                </nav>
+                                <h1 class="bradcaump-title">Cart</h1>
                             </div>
                         </div>
                     </div>
@@ -345,9 +293,9 @@
                                             <th class="product-remove">Remove</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="product-thumbnail"><a href="#"><img src="images/product/4.png" alt="product img" /></a></td>
+                                    <tbody id='tableBody'>
+                                        <!-- <tr>
+                                            <td class="product-thumbnail"><a href="#"><img src="/static/images/product/4.png" alt="product img" /></a></td>
                                             <td class="product-name"><a href="#">Vestibulum suscipit</a></td>
                                             <td class="product-price"><span class="amount">£165.00</span></td>
                                             <td class="product-quantity"><input type="number" value="1" /></td>
@@ -355,27 +303,20 @@
                                             <td class="product-remove"><a href="#">X</a></td>
                                         </tr>
                                         <tr>
-                                            <td class="product-thumbnail"><a href="#"><img src="images/product/3.png" alt="product img" /></a></td>
+                                            <td class="product-thumbnail"><a href="#"><img src="/static/images/product/3.png" alt="product img" /></a></td>
                                             <td class="product-name"><a href="#">Vestibulum dictum magna</a></td>
                                             <td class="product-price"><span class="amount">£50.00</span></td>
                                             <td class="product-quantity"><input type="number" value="1" /></td>
                                             <td class="product-subtotal">£50.00</td>
                                             <td class="product-remove"><a href="#">X</a></td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
                             <div class="row">
                                 <div class="col-md-8 col-sm-7 col-xs-12">
                                     <div class="buttons-cart">
-                                        <input type="submit" value="Update Cart" />
-                                        <a href="#">Continue Shopping</a>
-                                    </div>
-                                    <div class="coupon">
-                                        <h3>Coupon</h3>
-                                        <p>Enter your coupon code if you have one.</p>
-                                        <input type="text" placeholder="Coupon code" />
-                                        <input type="submit" value="Apply Coupon" />
+                                        <a href="/">Continue Shopping</a>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-5 col-xs-12">
@@ -384,35 +325,32 @@
                                         <table>
                                             <tbody>
                                                 <tr class="cart-subtotal">
-                                                    <th>Subtotal</th>
-                                                    <td><span class="amount">£215.00</span></td>
+                                                    
+                                                    
                                                 </tr>
                                                 <tr class="shipping">
                                                     <th>Shipping</th>
                                                     <td>
                                                         <ul id="shipping_method">
                                                             <li>
-                                                                <input type="radio" /> 
+                                                                <input type="radio" name="delivery" value="1"/> 
                                                                 <label>
-                                                                    Flat Rate: <span class="amount">£7.00</span>
+                                                                    1 Day Delivery: <span class="amount">$5.00</span>
                                                                 </label>
                                                             </li>
                                                             <li>
-                                                                <input type="radio" /> 
+                                                                <input type="radio" name="delivery" value="0" checked/> 
                                                                 <label>
-                                                                    Free Shipping
+                                                                    7 Day Delivery: <span class="amount">Free</span>
                                                                 </label>
                                                             </li>
                                                             <li></li>
                                                         </ul>
-                                                        <p><a class="shipping-calculator-button" href="#">Calculate Shipping</a></p>
+    
                                                     </td>
                                                 </tr>
                                                 <tr class="order-total">
-                                                    <th>Total</th>
-                                                    <td>
-                                                        <strong><span class="amount">£215.00</span></strong>
-                                                    </td>
+                                                    
                                                 </tr>                                           
                                             </tbody>
                                         </table>
@@ -438,7 +376,7 @@
                             <div class="ft__widget">
                                 <div class="ft__logo">
                                     <a href="index.html">
-                                        <img src="images/logo/logo.png" alt="footer logo">
+                                        <img src="/static/images/logo/logo.png" alt="footer logo">
                                     </a>
                                 </div>
                                 <div class="footer-address">
