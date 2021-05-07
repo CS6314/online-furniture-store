@@ -1,32 +1,7 @@
-## Folder structure (Don't pollute the folder structure)
-```
-└── Online-furniture-store
-    ├── webApp
-    │   ├── __init__.py
-    │   ├── admin
-    │   │   ├── __init__.py
-    │   │   ├── endpoints.py
-    │   │   └── templates
-    │   ├── auth
-    │   │   ├── __init__.py
-    │   │   ├── endpoints.py
-    │   │   └── templates
-    │   ├── home
-    │   │   ├── __init__.py
-    │   │   └── endpoints.py
-    |   |   └── templates
-    │   ├── error
-    │   │   ├── __init__.py
-    │   │   └── endpoints.py
-    |   |   └── templates
-    │   ├── static
-    │   └── templates
-    ├── config.py
-    ├── requirements.txt
-    └── run.py
-```
-## Requirement: Due date for project submission is May 9, 2021, 11:59 PM.
-```
+# Online-furniture-store ( Replace it with any name )
+
+## Requirement:
+
 1. Each project should include following major functionalities:
   o User signup: Register a new user to the system.
   o Check the new username or email address if it’s already registered to the system using AJAX.
@@ -53,7 +28,6 @@ For delete, soft-delete should be implemented. Item will be marked as deleted bu
 
 5. Each functionality listed above (add to cart, update cart, search, filtering, pagination,soft delete etc.) is 5 points. If you miss any of those functionaties you will lose 5
 points for each.
-```
 
 ## Deliverables:
 There will not be a project presentation.
@@ -64,3 +38,6 @@ o Source files (zip your home directory for your project)
 
 o Video recording of your website’s demo. In the video, you will walk viewers through all main functions of the website. The video should be between 3-5
   minutes long.
+
+## Due date for project submission is May 9, 2021, 11:59 PM.
+
