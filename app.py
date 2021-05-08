@@ -65,12 +65,15 @@ def userHome():
 
 @app.route('/adminHome')
 def adminHome():
-    return render_template('adminHome.html')
+    if session.get('user'):
+        return render_template('adminHome.html')
+    else:
+        return render_template('login-register.html')
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/showAddItem')

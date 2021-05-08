@@ -75,8 +75,8 @@ isDeletedRow = '<div class="form-group"><label for="isDeleted" class=" dark">Ava
     <button id="btnEdit" class="btn btn-lg btn-primary btn-block" type="submit">Edit</button>
 </form></div>`;
 
-    $('.table-content').after(productForm);
-    $('#editProduct').focus();
+    $('#editForm').append(productForm);
+    $('#editForm').focus();
    };
 
   function updateProductCount(data){
