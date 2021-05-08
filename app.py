@@ -38,9 +38,23 @@ def main():
 def showSignUp():
     return render_template('login-register.html')
 
+@app.route('/contact')
+def showContact():
+    return render_template('contact.html')
+
 @app.route('/cart')
 def showCart():
-    return render_template('cart.html')
+    if session.get('user'):
+        return render_template('cart.html')
+    else:
+        return render_template('login-register.html')
+
+@app.route('/orders')
+def orders():
+    if session.get('user'):
+        return render_template('orders.html')
+    else:
+        return render_template('login-register.html')
 
 @app.route('/allProducts')
 def allProducts():
@@ -108,7 +122,26 @@ def getCart():
         _user = session.get('user')
         con = mysql.connect()
         cursor = con.cursor()
-        cursor.execute("SELECT p.product_id,p.title,p.description,p.image_name,c.quantity,p.quantity,p.price FROM product p , cart c WHERE p.product_id = c.product_id")
+        cursor.execute("SELECT p.product_id,p.title,p.description,p.image_name,c.quantity,p.quantity,p.price FROM product p , cart c WHERE p.product_id = c.product_id and c.userid = %s",_user)
+        data = cursor.fetchall()
+        if len(data) > 0:
+            return json.dumps(data)
+        else:
+            return json.dumps({'html':'<span> Cart Empty for User </span>'})
+    
+    except Exception as e:
+            return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+@app.route('/getOrders',methods=['GET'])
+def getOrders():
+    try:
+        _user = session.get('user')
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.execute("SELECT o.orderid,p.title,p.image_name,o.ordered_date,o.delivery_date,o.price,o.quantity,a.name,a.street,a.city,a.state,a.zipcode,a.phone FROM product p , orders o , address a WHERE p.product_id = o.productid and a.orderid = o.orderid and o.userid = %s",_user)
         data = cursor.fetchall()
         if len(data) > 0:
             return json.dumps(data)
