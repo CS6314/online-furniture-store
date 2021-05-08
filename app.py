@@ -18,9 +18,9 @@ mysql = MySQL()
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'furniturestore'
+app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['MYSQL_DATABASE_PORT'] = 8889
+app.config['MYSQL_DATABASE_PORT'] = 3306
 mysql.init_app(app)
 
 app.secret_key = 'secret key can be anything!'
@@ -56,7 +56,7 @@ def showSignin():
 
 
 @app.route('/home')
-def userHome():
+def home():
 
     if session.get('user'):
         return render_template('index.html')
@@ -67,6 +67,13 @@ def userHome():
 def adminHome():
     if session.get('user'):
         return render_template('adminHome.html')
+    else:
+        return render_template('login-register.html')
+
+@app.route('/userHome')
+def userHome():
+    if session.get('user'):
+        return render_template('user-home.html')
     else:
         return render_template('login-register.html')
 
@@ -282,7 +289,7 @@ def validateLogin():
         if len(data) > 0:
             if str(data[0][5]) == _password and data[0][6] == 0:
                 session['user'] = data[0][0]
-                return redirect('/home')
+                return redirect('/userHome')
             if str(data[0][5]) == _password:
                 session['user'] = data[0][0]
                 return redirect('/adminHome')
