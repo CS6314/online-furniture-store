@@ -1,26 +1,30 @@
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Tmart-Minimalist eCommerce HTML5 Template</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    
+
 
     <!-- All css files are included here. -->
     <!-- Bootstrap fremwork main css -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <!-- Owl Carousel main css -->
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/css/owl.theme.default.min.css">
     <!-- This core.css file contents all plugings css file. -->
     <link rel="stylesheet" href="/static/css/core.css">
     <!-- Theme shortcodes/elements style -->
     <link rel="stylesheet" href="/static/css/shortcode/shortcodes.css">
     <!-- Theme main style -->
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <!-- Responsive css -->
     <link rel="stylesheet" href="/static/css/responsive.css">
     <!-- User style -->
@@ -29,12 +33,14 @@
 
     <!-- Modernizr JS -->
     <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/all-products.js"></script>
 </head>
 
 <body>
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->  
+    <![endif]-->
 
     <!-- Body main wrapper start -->
     <div class="wrapper fixed__footer">
@@ -80,44 +86,46 @@
                                             <!-- Start Single Mega MEnu -->
                                             <li><a class="mega__title" href="shop.html">product details layout</a>
                                                 <ul class="mega__item">
-                                                    <li><a href="product-details.html">tab style 1</a></li></li>
-                                                </ul>
+                                                    <li><a href="product-details.html">tab style 1</a></li>
                                             </li>
-                                            <!-- End Single Mega MEnu -->
-                                            <!-- Start Single Mega MEnu -->
+                                        </ul>
+                                    </li>
+                                    <!-- End Single Mega MEnu -->
+                                    <!-- Start Single Mega MEnu -->
+                                    <li>
+                                        <ul class="mega__item">
                                             <li>
-                                                <ul class="mega__item">
-                                                    <li>
-                                                        <div class="mega-item-img">
-                                                            <a href="shop.html">
-                                                                <img src="/static/images/feature-img/3.png" alt="">
-                                                            </a>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                <div class="mega-item-img">
+                                                    <a href="shop.html">
+                                                        <img src="/static/images/feature-img/3.png" alt="">
+                                                    </a>
+                                                </div>
                                             </li>
-                                            <!-- End Single Mega MEnu -->
                                         </ul>
                                     </li>
-                                    <li class="drop"><a href="#">pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="about.html">about</a></li>
-                                            <li><a href="#">testimonials <span><i class="zmdi zmdi-chevron-right"></i></span></a>
-                                                <ul class="lavel-dropdown">
-                                                    <li><a href="customer-review.html">customer review</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="shop.html">shop</a></li>
-                                            <li><a href="shop-sidebar.html">shop sidebar</a></li>
-                                            <li><a href="product-details.html">product details</a></li>
-                                            <li><a href="cart.html">cart</a></li>
-                                            <li><a href="wishlist.html">wishlist</a></li>
-                                            <li><a href="checkout.html">checkout</a></li>
-                                            <li><a href="team.html">team</a></li>
-                                            <li><a href="login-register.html">login & register</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">contact</a></li>
+                                    <!-- End Single Mega MEnu -->
+                                </ul>
+                                </li>
+                                <li class="drop"><a href="#">pages</a>
+                                    <ul class="dropdown">
+                                        <li><a href="about.html">about</a></li>
+                                        <li><a href="#">testimonials <span><i
+                                                        class="zmdi zmdi-chevron-right"></i></span></a>
+                                            <ul class="lavel-dropdown">
+                                                <li><a href="customer-review.html">customer review</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="shop.html">shop</a></li>
+                                        <li><a href="shop-sidebar.html">shop sidebar</a></li>
+                                        <li><a href="product-details.html">product details</a></li>
+                                        <li><a href="cart.html">cart</a></li>
+                                        <li><a href="wishlist.html">wishlist</a></li>
+                                        <li><a href="checkout.html">checkout</a></li>
+                                        <li><a href="team.html">team</a></li>
+                                        <li><a href="login-register.html">login & register</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="contact.html">contact</a></li>
                                 </ul>
                             </nav>
                             <div class="mobile-menu clearfix visible-xs visible-sm">
@@ -153,13 +161,14 @@
                                         <li><a href="contact.html">contact</a></li>
                                     </ul>
                                 </nav>
-                            </div>                         
+                            </div>
                         </div>
                         <!-- End MAinmenu Ares -->
-                        <div class="col-md-2 col-sm-4 col-xs-3">  
+                        <div class="col-md-2 col-sm-4 col-xs-3">
                             <ul class="menu-extra">
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
                                 <li><a href="login-register.html"><span class="ti-user"></span></a></li>
+                                <li><a href="/cart"><span class="ti-shopping-cart"></span></a></span></li>
                                 <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                             </ul>
                         </div>
@@ -170,15 +179,15 @@
             <!-- End Mainmenu Area -->
         </header>
         <!-- End Header Style -->
-        
+
         <div class="body__overlay"></div>
         <!-- Start Offset Wrapper -->
         <div class="offset__wrapper">
             <!-- Start Search Popap -->
             <div class="search__area">
-                <div class="container" >
-                    <div class="row" >
-                        <div class="col-md-12" >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="search__inner">
                                 <form action="#" method="get">
                                     <input placeholder="Search here... " type="text">
@@ -205,7 +214,8 @@
                                 <img src="/static/images/logo/logo.png" alt="logo">
                             </a>
                         </div>
-                        <p>Lorem ipsum dolor sit amet consectetu adipisicing elit sed do eiusmod tempor incididunt ut labore.</p>
+                        <p>Lorem ipsum dolor sit amet consectetu adipisicing elit sed do eiusmod tempor incididunt ut
+                            labore.</p>
                     </div>
                     <ul class="sidebar__thumd">
                         <li><a href="#"><img src="/static/images/sidebar-img/1.jpg" alt="sidebar images"></a></li>
@@ -238,13 +248,17 @@
                     <div class="offset__sosial__share">
                         <h4 class="offset__title">Follow Us On Social</h4>
                         <ul class="off__soaial__link">
-                            <li><a class="bg--twitter" href="#"  title="Twitter"><i class="zmdi zmdi-twitter"></i></a></li>
-                            
-                            <li><a class="bg--instagram" href="#" title="Instagram"><i class="zmdi zmdi-instagram"></i></a></li>
+                            <li><a class="bg--twitter" href="#" title="Twitter"><i class="zmdi zmdi-twitter"></i></a>
+                            </li>
 
-                            <li><a class="bg--facebook" href="#" title="Facebook"><i class="zmdi zmdi-facebook"></i></a></li>
+                            <li><a class="bg--instagram" href="#" title="Instagram"><i
+                                        class="zmdi zmdi-instagram"></i></a></li>
 
-                            <li><a class="bg--googleplus" href="#" title="Google Plus"><i class="zmdi zmdi-google-plus"></i></a></li>
+                            <li><a class="bg--facebook" href="#" title="Facebook"><i class="zmdi zmdi-facebook"></i></a>
+                            </li>
+
+                            <li><a class="bg--googleplus" href="#" title="Google Plus"><i
+                                        class="zmdi zmdi-google-plus"></i></a></li>
 
                             <li><a class="bg--google" href="#" title="Google"><i class="zmdi zmdi-google"></i></a></li>
                         </ul>
@@ -254,76 +268,72 @@
             <!-- End Offset MEnu -->
         </div>
         <!-- End Offset Wrapper -->
-        <!-- Start Login Register Area -->
-        <div class="htc__login__register bg__white ptb--130" style="background: rgba(0, 0, 0, 0) url(/static/images/bg/5.jpg) no-repeat scroll center center / cover ;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <ul class="login__register__menu" role="tablist">
-                            <li role="presentation" class="login active"><a href="#login" role="tab" data-toggle="tab">Login</a></li>
-                            <li role="presentation" class="register"><a href="#register" role="tab" data-toggle="tab">Register</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Start Login Register Content -->
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="htc__login__register__wrap">
-                            <!-- Start Single Content -->
-                            <div id="login" role="tabpanel" class="single__tabs__panel tab-pane fade in active">
-                                <form class="login" method="post">
-                                    <input type="text" placeholder="User Name*">
-                                    <input type="password" placeholder="Password*">
-                                </form>
-                                <div class="tabs__checkbox">
-                                    <input type="checkbox">
-                                    <span> Remember me</span>
-                                    <span class="forget"><a href="#">Forget Pasword?</a></span>
-                                </div>
-                                <div class="htc__login__btn mt--30">
-                                    <a href="#">Login</a>
-                                </div>
-                                
+        <!-- Start Bradcaump area -->
+        <div class="ht__bradcaump__area"
+            style="background: rgba(0, 0, 0, 0) url(/static/images/bg/2.jpg) no-repeat scroll center center / cover ;">
+            <div class="ht__bradcaump__wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="bradcaump__inner text-center">
+                                <h1 class="bradcaump-title">ADD PRODUCT</h1>
                             </div>
-                            <!-- End Single Content -->
-                            <!-- Start Single Content -->
-                            <div id="register" role="tabpanel" class="single__tabs__panel tab-pane fade">
-                                <form class="login" method="post">
-                                    <input type="text" placeholder="Name*">
-                                    <input type="email" placeholder="Email*">
-                                    <input type="password" placeholder="Password*">
-                                </form>
-                                <div class="tabs__checkbox">
-                                    <input type="checkbox">
-                                    <span> Remember me</span>
-                                </div>
-                                <div class="htc__login__btn">
-                                    <a href="#">register</a>
-                                </div>
-                                <div class="htc__social__connect">
-                                    <h2>Or Login With</h2>
-                                    <ul class="htc__soaial__list">
-                                        <li><a class="bg--twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-                                        <li><a class="bg--instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-                                        <li><a class="bg--facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                                        <li><a class="bg--googleplus" href="#"><i class="zmdi zmdi-google-plus"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Single Content -->
                         </div>
                     </div>
                 </div>
-                <!-- End Login Register Content -->
             </div>
         </div>
-        <!-- End Login Register Area -->
+        <!-- End Bradcaump area -->
+        <!-- cart-main-area start -->
+        <div class="cart-main-area ptb--120 bg__white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div>
+                                <form class="form-signin" enctype="multipart/form-data" sssrc action="/saveNewProduct"
+                                    method="POST">
+                                    <h1>Edit Item</h1>
+                                    <div id="addProductForm">
+                                        <div class="form-group"><label for="productName" class=" dark">Product
+                                                Name</label><input type="name" name="productName" id="productName"
+                                                class="form-control" required autofocus></div>
+                                        <div class="form-group"><label for="productDescription" class=" dark">Product
+                                                Description</label><input type="name" name="productDescription"
+                                                id="productDescription" class="form-control" required autofocus></div>
+                                        <div class="form-group"><label for="price" class=" dark">Price</label><input
+                                                type="name" name="price" id="price" class="form-control" required
+                                                autofocus></div>
+                                        <div class="form-group"><label for="quantity"
+                                                class=" dark">Quantity</label><input type="name" name="quantity"
+                                                id="quantity" class="form-control" required autofocus></div>
+                                        <div class="form-group"><label for="category"
+                                                class=" dark">Category</label><input type="name" name="category"
+                                                id="category" class="form-control" required autofocus></div>
+                                        <div class="form-group"><label for="isDeleted"
+                                                class=" dark">Available</label><input type="radio" value="0"
+                                                name="isDeleted" class="form-control"><label for="isDeleted"
+                                                class=" dark">Marked Deleted</label><input type="radio" value="1"
+                                                name="isDeleted" id="isDeleted" class="form-control"></div>
+                                        <div class="form-group"><label for="image" class=" dark">Image</label><input
+                                                type="file" id="image" name="image"
+                                                accept="image/png, image/jpeg" required></div>
+                                    </div>
+                                    <button id="btnEdit" class="btn btn-lg btn-primary btn-block"
+                                        type="submit">Edit</button>
+                                </form>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- cart-main-area end -->
         <!-- Start Footer Area -->
         <footer class="htc__foooter__area gray-bg">
             <div class="container">
                 <div class="row">
                     <div class="footer__container clearfix">
-                         <!-- Start Single Footer Widget -->
+                        <!-- Start Single Footer Widget -->
                         <div class="col-md-3 col-lg-3 col-sm-6">
                             <div class="ft__widget">
                                 <div class="ft__logo">
@@ -404,20 +414,27 @@
                                     <p>Subscribe to our newsletter and get 10% off your first purchase .</p>
                                     <div class="input__box">
                                         <div id="mc_embed_signup">
-                                            <form action="#" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                                            <form action="#" method="post" id="mc-embedded-subscribe-form"
+                                                name="mc-embedded-subscribe-form" class="validate" target="_blank"
+                                                novalidate>
                                                 <div id="mc_embed_signup_scroll" class="htc__news__inner">
                                                     <div class="news__input">
-                                                        <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email Address" required>
+                                                        <input type="email" value="" name="EMAIL" class="email"
+                                                            id="mce-EMAIL" placeholder="Email Address" required>
                                                     </div>
                                                     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                                                    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
-                                                    <div class="clearfix subscribe__btn"><input type="submit" value="Send" name="subscribe" id="mc-embedded-subscribe" class="bst__btn btn--white__color">
-                                                        
+                                                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                                        <input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef"
+                                                            tabindex="-1" value=""></div>
+                                                    <div class="clearfix subscribe__btn"><input type="submit"
+                                                            value="Send" name="subscribe" id="mc-embedded-subscribe"
+                                                            class="bst__btn btn--white__color">
+
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -430,8 +447,8 @@
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="copyright__inner">
                                 <div class="copyright">
-                                    <p>Â© 2017 <a href="#">ABC</a>
-                                    All Right Reserved.</p>
+                                    <p>© 2017 <a href="https://freethemescloud.com/">Free themes Cloud</a>
+                                        All Right Reserved.</p>
                                 </div>
                                 <ul class="footer__menu">
                                     <li><a href="index.html">Home</a></li>
