@@ -25,10 +25,13 @@
     <link rel="stylesheet" href="/static/css/responsive.css">
     <!-- User style -->
     <link rel="stylesheet" href="/static/css/custom.css">
-
+    <!--validation style-->
+    <link rel="stylesheet" href="/static/css/validate.css">
 
     <!-- Modernizr JS -->
     <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!--Validation JS -->
+    <!--<script src="static/js/validate.js"></script>-->
 </head>
 
 <body>
@@ -160,6 +163,7 @@
                             <ul class="menu-extra">
                                 <li class="search search__open hidden-xs"><span class="ti-search"></span></li>
                                 <li><a href="login-register.html"><span class="ti-user"></span></a></li>
+                                <li class="cart__menu"><span class="ti-shopping-cart"></span></li>
                                 <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                             </ul>
                         </div>
@@ -252,6 +256,55 @@
                 </div>
             </div>
             <!-- End Offset MEnu -->
+            <!-- Start Cart Panel -->
+            <div class="shopping__cart">
+                <div class="shopping__cart__inner">
+                    <div class="offsetmenu__close__btn">
+                        <a href="#"><i class="zmdi zmdi-close"></i></a>
+                    </div>
+                    <div class="shp__cart__wrap">
+                        <div class="shp__single__product">
+                            <div class="shp__pro__thumb">
+                                <a href="#">
+                                    <img src="/static/images/product/sm-img/1.jpg" alt="product images">
+                                </a>
+                            </div>
+                            <div class="shp__pro__details">
+                                <h2><a href="product-details.html">BO&Play Wireless Speaker</a></h2>
+                                <span class="quantity">QTY: 1</span>
+                                <span class="shp__price">$105.00</span>
+                            </div>
+                            <div class="remove__btn">
+                                <a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
+                            </div>
+                        </div>
+                        <div class="shp__single__product">
+                            <div class="shp__pro__thumb">
+                                <a href="#">
+                                    <img src="/static/images/product/sm-img/2.jpg" alt="product images">
+                                </a>
+                            </div>
+                            <div class="shp__pro__details">
+                                <h2><a href="product-details.html">Brone Candle</a></h2>
+                                <span class="quantity">QTY: 1</span>
+                                <span class="shp__price">$25.00</span>
+                            </div>
+                            <div class="remove__btn">
+                                <a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="shoping__total">
+                        <li class="subtotal">Subtotal:</li>
+                        <li class="total__price">$130.00</li>
+                    </ul>
+                    <ul class="shopping__btn">
+                        <li><a href="cart.html">View Cart</a></li>
+                        <li class="shp__checkout"><a href="checkout.html">Checkout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End Cart Panel -->
         </div>
         <!-- End Offset Wrapper -->
         <!-- Start Login Register Area -->
@@ -270,9 +323,9 @@
                     <div class="col-md-6 col-md-offset-3">
                         <div class="htc__login__register__wrap">
                             <!-- Start Single Content -->
-                            <div id="login" role="tabpanel" class="single__tabs__panel tab-pane fade in active">
-                                <form class="login" method="post">
-                                    <input type="text" placeholder="User Name*">
+                            <!-- <div id="login" role="tabpanel" class="single__tabs__panel tab-pane fade in active">
+                                <form class="login" action="/validateLogin" method="post">
+                                    <input type="text" id="inputEmail" placeholder="User Name*">
                                     <input type="password" placeholder="Password*">
                                 </form>
                                 <div class="tabs__checkbox">
@@ -284,23 +337,43 @@
                                     <a href="#">Login</a>
                                 </div>
                                 
+                            </div> -->
+                            <div id="login" role="tabpanel" class="single__tabs__panel tab-pane fade in active">
+                                <form class="login" action="/validateLogin" method="post">
+                                    <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address">
+                                    <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password">
+                                    <!-- <input type="text" placeholder="User Name*">
+                                    <input type="password" placeholder="Password*"> -->
+                                    <button id="btnSignIn" class="htc__login__btn mt--30" type="submit">Sign in</button>
+                                </form>
+                                <div class="tabs__checkbox">
+                                    <input type="checkbox">
+                                    <span> Remember me</span>
+                                    <span class="forget"><a href="#">Forget Pasword?</a></span>
+                                </div>                                
                             </div>
+                            
                             <!-- End Single Content -->
                             <!-- Start Single Content -->
                             <div id="register" role="tabpanel" class="single__tabs__panel tab-pane fade">
-                                <form class="login" method="post">
-                                    <input type="text" placeholder="Name*">
-                                    <input type="email" placeholder="Email*">
-                                    <input type="password" placeholder="Password*">
+                                <form class="login"action="/signUp" method="post">
+                                    <input type="text" name="firstName" id= "firstName" class="form-control" placeholder="First Name">
+                                    <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name">
+                                    <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address">
+                                    <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" placeholder="Confirm Email address">
+                                    <input type="text" name="contactNumber" id="contactNumber" class="form-control" placeholder="Contact Number">
+                                    <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password">
+                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm Password">
+                                    <button id="btnSignIn" class="htc__login__btn mt--30" type="submit">Register</button>
                                 </form>
-                                <div class="tabs__checkbox">
+                                <!-- <div class="tabs__checkbox">
                                     <input type="checkbox">
                                     <span> Remember me</span>
                                 </div>
                                 <div class="htc__login__btn">
                                     <a href="#">register</a>
-                                </div>
-                                <div class="htc__social__connect">
+                                </div> -->
+                                <!-- <div class="htc__social__connect">
                                     <h2>Or Login With</h2>
                                     <ul class="htc__soaial__list">
                                         <li><a class="bg--twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
@@ -308,7 +381,7 @@
                                         <li><a class="bg--facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
                                         <li><a class="bg--googleplus" href="#"><i class="zmdi zmdi-google-plus"></i></a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
                             <!-- End Single Content -->
                         </div>

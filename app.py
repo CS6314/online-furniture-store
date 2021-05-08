@@ -4,21 +4,27 @@ from flaskext.mysql import MySQL
 import views 
 from flask import session
 import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'static\images\product'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 app = Flask(__name__)
+
 
 mysql = MySQL()
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
+app.config['MYSQL_DATABASE_DB'] = 'furniturestore'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['MYSQL_DATABASE_PORT'] = 3306
+app.config['MYSQL_DATABASE_PORT'] = 8889
 mysql.init_app(app)
 
 app.secret_key = 'secret key can be anything!'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Send web pages
 
@@ -49,14 +55,17 @@ def showSignin():
     return render_template('signin.html')
 
 
-@app.route('/userHome')
+@app.route('/home')
 def userHome():
 
     if session.get('user'):
-        return render_template('userHome.html')
+        return render_template('index.html')
     else:
         return render_template('error.html', error='Unauthorized Access')
 
+@app.route('/adminHome')
+def adminHome():
+    return render_template('adminHome.html')
 
 @app.route('/logout')
 def logout():
@@ -137,10 +146,9 @@ def editProduct():
         conn = mysql.connect()
         cursor = conn.cursor()
         if 'image' in request.files:
-            dirname = os.path.dirname(__file__)
-            filename = os.path.join(dirname, 'static\images\product')
-            _imageFile = request.files['image']
-            _imageFileName = _imageFile.filename
+            _imageFileName = request.files['image']
+            filename = secure_filename(_imageFileName.filename)
+            _imageFileName.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # ***TODO SAVE FILE TO FOLDER ON SERVER***
             # _imageFile.save(dirname, _imageFileName)
             
@@ -149,7 +157,7 @@ def editProduct():
         if _productId :
             print("before sql")
             if _imageFileName:
-                cursor.execute("UPDATE  product SET title = %s, description =%s, image_name = %s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription, _imageFileName,_price,_quantity,_category,_isDeleted,_productId))
+                cursor.execute("UPDATE  product SET title = %s, description =%s, image_name = %s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription, filename,_price,_quantity,_category,_isDeleted,_productId))
             else :
                 cursor.execute("UPDATE  product SET title = %s, description =%s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription,_price,_quantity,_category,_isDeleted,_productId))
             data = cursor.fetchall()
@@ -181,18 +189,16 @@ def saveNewProduct():
         conn = mysql.connect()
         cursor = conn.cursor()
         if 'image' in request.files:
-            dirname = os.path.dirname(__file__)
-            filename = os.path.join(dirname, 'static\images\product')
-            _imageFile = request.files['image']
-            _imageFileName = _imageFile.filename
-            # ***TODO SAVE FILE TO FOLDER ON SERVER***
-            # _imageFile.save(dirname, _imageFileName)
+
+            _imageFileName = request.files['image']
+            filename = secure_filename(_imageFileName.filename)
+            _imageFileName.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             
             
             # validate the received values
         
         print("before sql")
-        cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)", (_productName, _productDescription, _imageFileName,_price,_quantity,_category,_isDeleted,))
+        cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)", (_productName, _productDescription, filename,_price,_quantity,_category,_isDeleted,))
         data = cursor.fetchall()
         if len(data) == 0:
             conn.commit()
@@ -266,14 +272,17 @@ def validateLogin():
         con = mysql.connect()
         cursor = con.cursor()
 
-        cursor.execute("SELECT * FROM tbl_user WHERE email = %s", (_email))
+        cursor.execute("SELECT * FROM user WHERE email = %s", (_email))
 
         data = cursor.fetchall()
 
         if len(data) > 0:
-            if str(data[0][3]) == _password:
+            if str(data[0][5]) == _password and data[0][6] == 0:
                 session['user'] = data[0][0]
-                return redirect('/userHome')
+                return redirect('/home')
+            if str(data[0][5]) == _password:
+                session['user'] = data[0][0]
+                return redirect('/adminHome')
             else:
                 return render_template('error.html', error='Wrong Email address or Password.')
         else:
@@ -294,19 +303,20 @@ def validateLogin():
 def signUp():
 
     # read the form data
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _password = request.form['inputPassword']
-
+    _firstname = request.form['firstName']
+    _lastname =  request.form['lastName']
+    _email =  request.form['inputEmail']
+    _contactNumber =  request.form['contactNumber']
+    _password =  request.form['inputPassword']
     # validate the form data
-    if _name and _email and _password:
+    if _firstname and _lastname and _email and _contactNumber and _password:
 
         # Open mysql connection
         conn = mysql.connect()
         cursor = conn.cursor()
 
         # check the user whether he is registrated already or not
-        cursor.execute("SELECT * FROM tbl_user WHERE email = %s", (_email))
+        cursor.execute("SELECT * FROM user WHERE email = %s", (_email))
         registeredUserDetails = cursor.fetchall()
 
         if len(registeredUserDetails) > 0:
@@ -314,14 +324,14 @@ def signUp():
 
         # Pass the SQL statement
         cursor.execute(
-            "INSERT INTO tbl_user(name, email, password) VALUES (%s, %s, %s)", (_name, _email, _password))
+            "INSERT INTO user(email, fname, lname, contact, password) VALUES (%s, %s, %s, %s,%s)", (_email, _firstname, _lastname, _contactNumber, _password))
 
         # Confirm its inserted properly
         data = cursor.fetchall()
 
         if len(data) == 0:
             conn.commit()
-            return json.dumps({'message': 'User created successfully !'})
+            return redirect('/login')
         else:
             return json.dumps({'error': str(data[0])})
 
