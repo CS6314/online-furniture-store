@@ -17,7 +17,7 @@ mysql = MySQL()
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'akash123'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
 app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_PORT'] = 3306
@@ -272,15 +272,42 @@ def saveNewProduct():
             _imageFileName.save(os.path.join(
                 app.config['UPLOAD_FOLDER'], filename))
 
-            # validate the received values
-
-        print("before sql")
         cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)",
                        (_productName, _productDescription, filename, _price, _quantity, _category, _isDeleted,))
         data = cursor.fetchall()
         if len(data) == 0:
             conn.commit()
             return redirect('/allProducts')
+        else:
+            return json.dumps({'error': str(data[0])})
+    except Exception as e:
+        return render_template('error.html', error=str(e))
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/addToCart', methods=['POST'])
+def addToCart():
+    try:
+        _user = session.get('user')
+        _productId = request.form['productId']
+        _quantity = 1
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT quantity FROM cart WHERE product_id = %s and userid = %s ",(_productId, _user))
+        data = cursor.fetchall()
+        if data :
+            dbQuantity = data[0][0]
+            if dbQuantity > 0 :
+                dbQuantity = dbQuantity + 1
+                cursor.execute("UPDATE cart SET quantity = %s where product_id =%s and userid =%s",(dbQuantity,_productId, _user)) 
+        else:
+            cursor.execute("INSERT INTO  cart (product_id, quantity, userid) VALUES ( %s, %s, %s)",(_productId,_quantity, _user))
+        data = cursor.fetchall()
+        if len(data) == 0:
+            conn.commit()
+            return redirect('/cart')
         else:
             return json.dumps({'error': str(data[0])})
     except Exception as e:
@@ -419,109 +446,6 @@ def signUp():
 
     else:
         return json.dumps({'html': '<span>Enter the required fields!</span>'})
-
-#
-#   # Add Item end point
-#
-
-
-@app.route('/addItem', methods=['POST'])
-def addItem():
-
-    try:
-        if session.get('user'):
-            todoId = request.args.get('id')
-            _title = request.form['inputTitle']
-            _description = request.form['inputDescription']
-            _user = session.get('user')
-            isCompleted = 1 if len(
-                request.form.getlist('isCompleted')) > 0 else 0
-            print(isCompleted)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-
-            if todoId:
-                # update the todo list with all the new fields
-                cursor.execute("UPDATE tbl_todo SET title = %s,description = %s,isCompleted=%s WHERE (id = %s); ", (
-                    _title, _description, (isCompleted), todoId))
-            else:
-
-                cursor.execute("INSERT INTO tbl_todo(title,description,userid,isCompleted) VALUES (%s, %s, %s,%s)", (
-                    _title, _description, _user, (isCompleted)))
-
-            data = cursor.fetchall()
-
-            if len(data) == 0:
-                conn.commit()
-
-                return redirect('/userHome')
-
-            else:
-                return render_template('error.html', error="An error occured!")
-
-        else:
-            return render_template('error.html', error="Unauthorized Access")
-    except Exception as e:
-        return render_template('error.html', error=str(e))
-
-#
-# RetrieveData end point
-#
-
-
-@app.route('/retrieveData', methods=['GET'])
-def retrieveData():
-    try:
-        if session.get('user'):
-            _user = session.get('user')
-
-            conn = mysql.connect()
-            cursor = conn.cursor()
-
-            cursor.execute("SELECT * from tbl_todo WHERE userid = %s", (_user))
-
-            data = cursor.fetchall()
-            return json.dumps(data)
-            # if len(data) == 0:
-            #     return json.dumps(data)
-
-            # else:
-            #     return render_template('error.html', error = "An error occured!")
-
-        else:
-            return render_template('error.html', error="Unauthorized Access")
-    except Exception as e:
-        return render_template('error.html', error=str(e))
-
-#
-# Delete the to-do list item
-#
-
-
-@app.route('/deleteTodolistItem', methods=['GET'])
-def deleteTheTodolist():
-
-    try:
-        if session.get('user'):
-            # validate user, then delete the to do list
-            todoId = request.args.get('id')
-
-            conn = mysql.connect()
-            cursor = conn.cursor()
-
-            cursor.execute("DELETE FROM tbl_todo WHERE (id = %s); ", (todoId))
-
-            data = cursor.fetchall()
-
-            if len(data) == 0:
-                conn.commit()
-
-                return redirect('/userHome')
-
-            else:
-                return render_template('error.html', error="An error occured!")
-    except Exception as e:
-        return render_template('error.html', error=str(e))
 
 
 #
