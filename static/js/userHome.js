@@ -57,12 +57,17 @@ $(document).ready(function () {
                               "/static/images/product/" + response[index][3]
                             } ><br />
                             <div class='pt-10' id=${response[index][0]}>
-                            Title ${response[index][1]}<br />
+                            Title: ${response[index][1]}<br />
                             Description: ${response[index][2]}<br />
-                            Price: ${response[index][4]}<br />
+                            Price: $${response[index][4]}<br />
                             Quantity: ${response[index][5]}<br />
                             Category: ${response[index][6]}<br />
                             Available <br />
+                            <form class="form-signin" action="/addToCart" method="post">
+                            <div class="form-group">
+                            <input type="hidden" name="productId" id="productId" class="form-control" value=" ${response[index][0]}"></div>
+                            <button class="btn btn-secondary btn-block" type="submit">Add to Cart</button>
+                            </form>
                             
                             </div>
                             </div></div>`;
@@ -130,12 +135,17 @@ function paginationTable(data) {
                   "/static/images/product/" + response[index][3]
                 } ><br />
                 <div class='pt-10' id=${response[index][0]}>
-                Title ${response[index][1]}<br />
+                Title: ${response[index][1]}<br />
                 Description: ${response[index][2]}<br />
-                Price: ${response[index][4]}<br />
+                Price: $${response[index][4]}<br />
                 Quantity: ${response[index][5]}<br />
                 Category: ${response[index][6]}<br />
                 Available <br />
+                <form class="form-signin" action="/addToCart" method="post">
+                <div class="form-group">
+                <input type="hidden" name="productId" id="productId" class="form-control" value=" ${response[index][0]}"></div>
+                <button class="btn btn-secondary btn-block" type="submit">Add to Cart</button>
+                </form>
                
                 </div>
                 </div></div>`;
@@ -158,19 +168,24 @@ function getAllProducts(){
         success: function (response) {
           allProducts = response;
           console.log(response);
-          for (let index = 0; index < 9; index++) {
+          for (let index = 0; index < response.length<9?response.length:9; index++) {
               product = `
                     <div class='col-sm-4 product'>
-                    <div class='product-inner text-center' ><img src=${
-                      "/static/images/product/" + response[index][3]
-                    }>
-                    <br />
+                    <div class='product-inner text-center' >
+                    <img src=${
+                        "/static/images/product/" + response[index][3]
+                      } ><br />
                     <div class='pt-10'>
-                     Title ${response[index][1]}<br />
+                     Title: ${response[index][1]}<br />
                     Description: ${response[index][2]}<br />
-                    Price: ${response[index][4]}<br />
+                    Price: $${response[index][4]}<br />
                     Category: ${response[index][6]}<br />
-                   Available <br />
+                    Available <br />
+                    <form class="form-signin" action="/addToCart" method="post">
+                    <div class="form-group">
+                    <input type="hidden" name="productId" id="productId" class="form-control" value=" ${response[index][0]}"></div>
+                    <button class="btn btn-secondary btn-block" type="submit">Add to Cart</button>
+                    </form>
                     
                     </div>
                     </div></div>`;

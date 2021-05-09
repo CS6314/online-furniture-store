@@ -138,9 +138,16 @@ function editProduct(data) {
     <div class="form-group"><label for="quantity" class=" dark">Quantity</label><input type="name" name="quantity" id="quantity" class="form-control" value="` +
     product[5] +
     `"required autofocus></div>
-    <div class="form-group"><label for="category" class=" dark">Category</label><input type="name" name="category" id="category" class="form-control" value="` +
+    <div class="form-group"><label for="category" class=" dark">Category</label><input type="text" list="categories" name="category" id="category" class="form-control" value="` +
     product[6] +
-    `"required autofocus></div>
+    `"required autofocus>
+    <datalist id="categories">
+    <option value="Living Room">
+    <option value="Dining Room">
+    <option value="Outdoor">
+    <option value="Bedroom">
+    <option value="Office">
+  </datalist></div>
     ` +
     isDeletedRow +
     idRow +
