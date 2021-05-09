@@ -29,10 +29,13 @@
     <link rel="stylesheet" href="/static/css/validate.css">
 
     <!-- Modernizr JS -->
-    <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script> -->
     <!--Validation JS -->
-    <!--<script src="static/js/validate.js"></script>-->
+    <!-- <script src="/static/js/register.js"></script> -->
 </head>
 
 <body>
@@ -94,15 +97,15 @@
                             
                             <!-- End Single Content -->
                             <!-- Start Single Content -->
-                            <div id="register" role="tabpanel" class="single__tabs__panel tab-pane fade">
-                                <form class="login"action="/signUp" method="post">
-                                    <input type="text" name="firstName" id= "firstName" class="form-control" placeholder="First Name">
-                                    <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name">
-                                    <input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address">
-                                    <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" placeholder="Confirm Email address">
-                                    <input type="text" name="contactNumber" id="contactNumber" class="form-control" placeholder="Contact Number">
-                                    <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password">
-                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm Password">
+                            <div id='register' role="tabpanel" class="single__tabs__panel tab-pane fade">
+                                <form class="login" id='userRegister' action="/signUp" method="post">
+                                    <input type="text" name="firstName" id= "firstName" class="form-control" placeholder="First Name" >
+                                    <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Last Name" >
+                                    <input type="email" name="email" id="newEmail" class="form-control" placeholder="Email address" >
+                                    <input type="email" name="confirmEmail" id="confirmEmailID" equalto="#inputEmail" class="form-control" placeholder="Confirm Email address" >
+                                    <input type="text" name="contactNumber" id="contactNumber" class="form-control" placeholder="Contact Number" >
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" >
+                                    <input type="password" name="confirmPassword" id="confirmPassword" equalto="#password1" class="form-control" placeholder="Confirm Password" >
                                     <button id="btnSignIn" class ="btn btn-secondary" type="submit">Register</button>
                                 </form>
                             </div>
@@ -141,6 +144,8 @@
 
     <!-- jquery latest version -->
     <script src="/static/js/vendor/jquery-1.12.0.min.js"></script>
+    <script src="/static/js/vendor/jquery.validate.js"></script>
+    <script src="/static/js/register.js"></script>
     <!-- Bootstrap framework js -->
     <script src="/static/js/bootstrap.min.js"></script>
     <!-- All js plugins included in this file. -->
