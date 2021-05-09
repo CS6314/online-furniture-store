@@ -116,8 +116,16 @@
                                                 class=" dark">Quantity</label><input type="name" name="quantity"
                                                 id="quantity" class="form-control" required autofocus></div>
                                         <div class="form-group"><label for="category"
-                                                class=" dark">Category</label><input type="name" name="category"
-                                                id="category" class="form-control" required autofocus></div>
+                                                class=" dark">Category</label><input type="text" name="category"
+                                                id="category" class="form-control" list="cityname" required autofocus>
+                                                <datalist id="cityname">
+                                                    <option value="Living Room">
+                                                    <option value="Dining Room">
+                                                    <option value="Outdoor">
+                                                    <option value="Bedroom">
+                                                    <option value="Office">
+                                                  </datalist>
+                                            </div>
                                         <div class="form-group"><label for="isDeleted"
                                                 class=" dark">Available</label><input type="radio" value="0"
                                                 name="isDeleted" class="form-control"><label for="isDeleted"
