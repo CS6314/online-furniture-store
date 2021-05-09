@@ -17,7 +17,7 @@ mysql = MySQL()
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'akash123'
 app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_PORT'] = 3306
@@ -31,7 +31,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def main():
-    return render_template('index.html')
+    return render_template('login-register.html')
 
 
 @app.route('/login')
@@ -83,7 +83,10 @@ def home():
 @app.route('/adminHome')
 def adminHome():
     if session.get('user'):
-        return render_template('adminHome.html')
+        if session.get('isAdmin')== 1:
+            return render_template('adminHome.html')
+        else:
+            return render_template('user-home.html')
     else:
         return render_template('login-register.html')
 
@@ -218,7 +221,8 @@ def editProduct():
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        if 'image' in request.files:
+        _imageFileName = request.files['image']
+        if 'image' in request.files and request.files['image'].filename != '':
             _imageFileName = request.files['image']
             filename = secure_filename(_imageFileName.filename)
             _imageFileName.save(os.path.join(
@@ -258,7 +262,7 @@ def saveNewProduct():
         _price = request.form['price']
         _quantity = request.form['quantity']
         _category = request.form['category']
-        _isDeleted = request.form['isDeleted']
+        _isDeleted = request.form['isDeleted'] if "isDeleted" in request.form else 0
 
         print(_productName, _productDescription,
               _price, _quantity, _category, _isDeleted)
@@ -386,6 +390,7 @@ def validateLogin():
         data = cursor.fetchall()
 
         if len(data) > 0:
+            session['isAdmin']=data[0][6]
             if str(data[0][5]) == _password and data[0][6] == 0:
                 session['user'] = data[0][0]
                 return redirect('/userHome')
@@ -414,9 +419,9 @@ def signUp():
     # read the form data
     _firstname = request.form['firstName']
     _lastname = request.form['lastName']
-    _email = request.form['inputEmail']
+    _email = request.form['email']
     _contactNumber = request.form['contactNumber']
-    _password = request.form['inputPassword']
+    _password = request.form['password']
     # validate the form data
     if _firstname and _lastname and _email and _contactNumber and _password:
 
@@ -429,7 +434,7 @@ def signUp():
         registeredUserDetails = cursor.fetchall()
 
         if len(registeredUserDetails) > 0:
-            return json.dumps({'message': 'User already registered!'})
+            return json.dumps({'error': 'User already registered!'})
 
         # Pass the SQL statement
         cursor.execute(
@@ -440,7 +445,7 @@ def signUp():
 
         if len(data) == 0:
             conn.commit()
-            return redirect('/login')
+            return json.dumps({'message': 'User registered!'})
         else:
             return json.dumps({'error': str(data[0])})
 
@@ -510,8 +515,8 @@ def searchProducts():
             print (type(request.args.get('pageNumber')),'Value:',request.args.get('pageNumber'))
         # request.args.get('pageNumber') is not None: 
             pageNumber = int(request.args.get('pageNumber'))
-            startingElement = 0 if 10*(pageNumber-1)-1 < 0 else 10*(pageNumber-1)-1
-            lastElement =  9 if startingElement == 0 else 10*(pageNumber)-1
+            startingElement = 0 if 10*(pageNumber-1)-(pageNumber - 1) < 0 else 10*(pageNumber-1)-(pageNumber - 1)
+            lastElement =  9 if startingElement == 0 else 10*(pageNumber)-pageNumber
             baseQuery += ' order by product_id LIMIT %s,%s '
             filterValues.extend((startingElement, lastElement))
         

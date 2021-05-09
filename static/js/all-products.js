@@ -45,30 +45,34 @@ $(document).ready(function () {
     event.preventDefault();
     console.log("clicked");
     let searchFormValues = $("#search-form")[0];
-    console.log($('#category').val());    
-    if($('#category').val()=='*' && $('#price').val() == '*' && $('#quantity').val() == '*' && $('#searchText').val() == ''){
-        $("#products").empty();
-        getAllProducts();
-    }
-    else{
-        $.ajax({
-            url: "/searchProducts?pageNumber=1",
-            type: "POST",
-            data: $("#search-form").serialize(),
-            dataType: "json",
-            success: function (response) {
-              $("#products").empty();
-              console.log(response);
-              console.log(response.html)
-              if(response.html){
-                  $("#products").append(response.html)
-              }else{
-                  $.each(response, function (index) {
-                      // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Available</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
-            
-                      // $('#tableBody').append(listRow);
-            
-                      product = `
+    console.log($("#category").val());
+    if (
+      $("#category").val() == "*" &&
+      $("#price").val() == "*" &&
+      $("#quantity").val() == "*" &&
+      $("#searchText").val() == ""
+    ) {
+      $("#products").empty();
+      getAllProducts();
+    } else {
+      $.ajax({
+        url: "/searchProducts?pageNumber=1",
+        type: "POST",
+        data: $("#search-form").serialize(),
+        dataType: "json",
+        success: function (response) {
+          $("#products").empty();
+          console.log(response);
+          console.log(response.html);
+          if (response.html) {
+            $("#products").append(response.html);
+          } else {
+            $.each(response, function (index) {
+              // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Available</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
+
+              // $('#tableBody').append(listRow);
+
+              product = `
                             <div class='col-sm-4 product'>
                             <div class='product-inner text-center' >
                             <img src=${
@@ -84,19 +88,17 @@ $(document).ready(function () {
                             <a href="#" class='edit' onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a>
                             </div>
                             </div></div>`;
-            
-                      $("#products").append(product);
-                    });
-                    paginationTable(response);
-              }
-              
-            },
-            error: function (error) {
-              console.log(error);
-            },
-          });
+
+              $("#products").append(product);
+            });
+            paginationTable(response);
+          }
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
     }
-    
   });
 });
 function editProduct(data) {
@@ -224,13 +226,19 @@ function paginationTable(data) {
   $("#pagination-container").empty();
   $("#pagination-container").append(`<button>&laquo;</button>`);
   //  only 10 elements per page
-  for (i = 0; i < data.length / 10; i++) {
-    console.log("i", i);
-    $("#pagination-container").append(
-      `<button id='paginate' ${i == 0 ? 'class="active"' : ""}>${
-        i + 1
-      }</button>`
-    );
+  data = data.filter(eachData => eachData[7] !=1);
+  noOfPages = Math.ceil(data.length / 9);
+  console.log(data, noOfPages);
+  for (i = 0; i < noOfPages; i++) {
+    console.log("i", i, i < noOfPages);
+    
+      $("#pagination-container").append(
+        `<button id='paginate' ${i == 0 ? 'class="active"' : ""}>${
+          i + 1
+        }</button>`
+      );
+    
+    
   }
   $("#pagination-container").append(`<button>&raquo;</button>`);
 
@@ -249,32 +257,31 @@ function paginationTable(data) {
       dataType: "json",
       success: function (response) {
         $("#products").empty();
-        console.log(response.html)
+        console.log(response.html);
 
         $.each(response, function (index) {
           console.log(response);
           // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Available</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
 
           // $('#tableBody').append(listRow);
+          if (!response[index][7]) {
+            product = `
+          <div class='col-sm-4 product'>
+          <div class='product-inner text-center' >
+          <img src=${"/static/images/product/" + response[index][3]} ><br />
+          <div class='pt-10' id=${response[index][0]}>
+          Title ${response[index][1]}<br />
+          Description: ${response[index][2]}<br />
+          Price: ${response[index][4]}<br />
+          Quantity: ${response[index][5]}<br />
+          Category: ${response[index][6]}<br />
+          Available <br />
+          <a href="#" class='edit' onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a>
+          </div>
+          </div></div>`;
 
-          product = `
-                <div class='col-sm-4 product'>
-                <div class='product-inner text-center' >
-                <img src=${
-                  "/static/images/product/" + response[index][3]
-                } ><br />
-                <div class='pt-10' id=${response[index][0]}>
-                Title ${response[index][1]}<br />
-                Description: ${response[index][2]}<br />
-                Price: ${response[index][4]}<br />
-                Quantity: ${response[index][5]}<br />
-                Category: ${response[index][6]}<br />
-                Available <br />
-                <a href="#" class='edit' onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a>
-                </div>
-                </div></div>`;
-
-          $("#products").append(product);
+            $("#products").append(product);
+          }
         });
       },
       error: function (error) {
@@ -283,18 +290,18 @@ function paginationTable(data) {
     });
   });
 }
-function getAllProducts(){
-    $("#products").empty();
-    $.ajax({
-        url: "/getProducts",
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-          allProducts = response;
-          console.log(response);
-          for (let index = 0; index < 9; index++) {
-            if (response[index][7]) {
-              product = `
+function getAllProducts() {
+  $("#products").empty();
+  $.ajax({
+    url: "/getProducts",
+    type: "GET",
+    dataType: "json",
+    success: function (response) {
+      allProducts = response;
+      let length = response.length < 9 ? response.length : 9;
+      for (let index = 0; index < length; index++) {
+        if (response[index][7]) {
+          product = `
                     <div class='col-sm-4 product'>
                     <div class='product-inner text-center' ><img src=${
                       "/static/images/product/" + response[index][3]
@@ -309,9 +316,9 @@ function getAllProducts(){
                     <a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a>
                     </div>
                     </div></div>`;
-              // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Marked Deleted</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
-            } else {
-              product = `
+          // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Marked Deleted</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
+        } else {
+          product = `
                     <div class='col-sm-4 product'>
                     <div class='product-inner text-center' >
                     <img src=${
@@ -327,21 +334,21 @@ function getAllProducts(){
                     <a href="#" class='edit' onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a>
                     </div>
                     </div></div>`;
-              // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Available</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
-            }
-            // $('#tableBody').append(listRow);
-            $("#products").append(product);
-          }
-    
-          // var subTotalRow = '<th>Subtotal</th><td><span class="amount">$'+subTotal+'</span></td>';
-          // var totalRow = '<th>Total</th><td><strong><span class="amount">$'+subTotal+'</span></strong></td>'
-          // $('.cart-subtotal').append(subTotalRow);
-          // $('.order-total').append(totalRow);
-    
-          paginationTable(response);
-        },
-        error: function (error) {
-          console.log(error);
-        },
-      });
+          // var listRow = '<tr id="'+response[index][0]+'"><td class="product-thumbnail"><img src="/static/images/product/' + response[index][3] + '" alt="Image Unavailable" /></td><td class="product-name"><a href="#">' + response[index][1] + '</td><td class="product-name">' + response[index][2] + '</td><td class="product-name">'+response[index][4]+'</td><td class="product-name">' + response[index][6]+'</td><td class="product-name">'+response[index][5]+'</td><td class="product-name">Available</td><td class="product-remove"><a href="#" onclick="editProduct(this);"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg></a></td></tr>';
+        }
+        // $('#tableBody').append(listRow);
+        $("#products").append(product);
+      }
+
+      // var subTotalRow = '<th>Subtotal</th><td><span class="amount">$'+subTotal+'</span></td>';
+      // var totalRow = '<th>Total</th><td><strong><span class="amount">$'+subTotal+'</span></strong></td>'
+      // $('.cart-subtotal').append(subTotalRow);
+      // $('.order-total').append(totalRow);
+
+      paginationTable(response);
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
 }
