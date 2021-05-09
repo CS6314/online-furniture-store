@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request, json, redirect
 from flaskext.mysql import MySQL
-import views 
+import views
 from flask import session
 import os
 from werkzeug.utils import secure_filename
@@ -17,7 +17,7 @@ mysql = MySQL()
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'akash123'
 app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_PORT'] = 3306
@@ -56,9 +56,11 @@ def orders():
     else:
         return render_template('login-register.html')
 
+
 @app.route('/allProducts')
 def allProducts():
     return render_template('all-products.html')
+
 
 @app.route('/addProduct')
 def addProduct():
@@ -77,6 +79,7 @@ def home():
     else:
         return render_template('error.html', error='Unauthorized Access')
 
+
 @app.route('/adminHome')
 def adminHome():
     if session.get('user'):
@@ -84,12 +87,14 @@ def adminHome():
     else:
         return render_template('login-register.html')
 
+
 @app.route('/userHome')
 def userHome():
     if session.get('user'):
         return render_template('user-home.html')
     else:
         return render_template('login-register.html')
+
 
 @app.route('/logout')
 def logout():
@@ -116,7 +121,9 @@ def showAddItem():
  #
  #  Validate login end point
  #
-@app.route('/getCart',methods=['GET'])
+
+
+@app.route('/getCart', methods=['GET'])
 def getCart():
     try:
         _user = session.get('user')
@@ -146,36 +153,58 @@ def getOrders():
         if len(data) > 0:
             return json.dumps(data)
         else:
-            return json.dumps({'html':'<span> Cart Empty for User </span>'})
-    
+            return json.dumps({'html': '<span> Cart Empty for User </span>'})
+
     except Exception as e:
-            return render_template('error.html',error = str(e))
+            return render_template('error.html', error=str(e))
     finally:
         cursor.close()
         con.close()
 
-@app.route('/getProducts',methods=['GET'])
+
+@app.route('/getProducts', methods=['GET'])
 def getProducts():
     try:
         _user = session.get('user')
         con = mysql.connect()
         cursor = con.cursor()
-        cursor.execute("SELECT * FROM product p")
+        cursor.execute("SELECT * FROM product p order by product_id")
         data = cursor.fetchall()
         if len(data) > 0:
             return json.dumps(data)
         else:
-            return json.dumps({'html':'<span> No Products in the database </span>'})
-    
+            return json.dumps({'html': '<span> No Products in the database </span>'})
+
     except Exception as e:
-            return render_template('error.html',error = str(e))
+            return render_template('error.html', error=str(e))
     finally:
         cursor.close()
         con.close()
 
-@app.route('/editProduct',methods=['POST'])
+
+@app.route('/getProductsForUser', methods=['GET'])
+def getProductsForUser():
+    try:
+        _user = session.get('user')
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.execute("SELECT * FROM product p where is_deleted=0 order by product_id")
+        data = cursor.fetchall()
+        if len(data) > 0:
+            return json.dumps(data)
+        else:
+            return json.dumps({'html': '<span> No Products in the database </span>'})
+
+    except Exception as e:
+            return render_template('error.html', error=str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+
+@app.route('/editProduct', methods=['POST'])
 def editProduct():
-    try :
+    try:
         _productId = request.form['productId']
         _productName = request.form['productName']
         _productDescription = request.form['productDescription']
@@ -183,124 +212,134 @@ def editProduct():
         _quantity = request.form['quantity']
         _category = request.form['category']
         _isDeleted = request.form['isDeleted']
-        
-        print(_productId,_productName,_productDescription,_price,_quantity,_category,_isDeleted)
-        
+
+        print(_productId, _productName, _productDescription,
+              _price, _quantity, _category, _isDeleted)
+
         conn = mysql.connect()
         cursor = conn.cursor()
         if 'image' in request.files:
             _imageFileName = request.files['image']
             filename = secure_filename(_imageFileName.filename)
-            _imageFileName.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            _imageFileName.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], filename))
             # ***TODO SAVE FILE TO FOLDER ON SERVER***
             # _imageFile.save(dirname, _imageFileName)
-            
-            
+
             # validate the received values
-        if _productId :
+        if _productId:
             print("before sql")
             if _imageFileName:
-                cursor.execute("UPDATE  product SET title = %s, description =%s, image_name = %s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription, filename,_price,_quantity,_category,_isDeleted,_productId))
-            else :
-                cursor.execute("UPDATE  product SET title = %s, description =%s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (_productName, _productDescription,_price,_quantity,_category,_isDeleted,_productId))
+                cursor.execute("UPDATE  product SET title = %s, description =%s, image_name = %s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (
+                    _productName, _productDescription, filename, _price, _quantity, _category, _isDeleted, _productId))
+            else:
+                cursor.execute("UPDATE  product SET title = %s, description =%s, price = %s, quantity = %s,category = %s,is_deleted = %s WHERE product_id =%s", (
+                    _productName, _productDescription, _price, _quantity, _category, _isDeleted, _productId))
             data = cursor.fetchall()
             if len(data) == 0:
                 conn.commit()
                 return redirect('/allProducts')
             else:
-                return json.dumps({'error':str(data[0])})
+                return json.dumps({'error': str(data[0])})
         else:
-            return json.dumps({'html':'<span> Product ID not recieved</span>'})
+            return json.dumps({'html': '<span> Product ID not recieved</span>'})
     except Exception as e:
-        return render_template('error.html',error = str(e))
+        return render_template('error.html', error=str(e))
     finally:
         cursor.close()
         conn.close()
 
-@app.route('/saveNewProduct',methods=['POST'])
+
+@app.route('/saveNewProduct', methods=['POST'])
 def saveNewProduct():
-    try :
+    try:
         _productName = request.form['productName']
         _productDescription = request.form['productDescription']
         _price = request.form['price']
         _quantity = request.form['quantity']
         _category = request.form['category']
         _isDeleted = request.form['isDeleted']
-        
-        print(_productName,_productDescription,_price,_quantity,_category,_isDeleted)
-        
+
+        print(_productName, _productDescription,
+              _price, _quantity, _category, _isDeleted)
+
         conn = mysql.connect()
         cursor = conn.cursor()
         if 'image' in request.files:
 
             _imageFileName = request.files['image']
             filename = secure_filename(_imageFileName.filename)
-            _imageFileName.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            
-            
+            _imageFileName.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], filename))
+
             # validate the received values
-        
+
         print("before sql")
-        cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)", (_productName, _productDescription, filename,_price,_quantity,_category,_isDeleted,))
+        cursor.execute("INSERT INTO  product (title, description, image_name, price, quantity, category, is_deleted) VALUES ( %s, %s, %s, %s, %s, %s, %s)",
+                       (_productName, _productDescription, filename, _price, _quantity, _category, _isDeleted,))
         data = cursor.fetchall()
         if len(data) == 0:
             conn.commit()
             return redirect('/allProducts')
         else:
-            return json.dumps({'error':str(data[0])})
+            return json.dumps({'error': str(data[0])})
     except Exception as e:
-        return render_template('error.html',error = str(e))
+        return render_template('error.html', error=str(e))
     finally:
         cursor.close()
         conn.close()
 
-@app.route('/deleteProductFromCart',methods=['POST'])
-def deleteProductFromCart():
-    try :
-        con = mysql.connect()
-        cursor = con.cursor()
-        # read the posted values from the UI
-        requestBody = request.get_json()
-        _productId = requestBody['productId']        
-        # validate the received values
-        if _productId :
-            cursor.execute("DELETE FROM cart WHERE product_id = %s", (_productId))
-            data = cursor.fetchall()
-            if len(data) == 0:
-                con.commit()
-                return json.dumps({'delete':'successful'})
-            else:
-                return json.dumps({'error':str(data[0])})
-        else:
-            return json.dumps({'html':'<span> Product ID to from Cart not received. </span>'})
-    except Exception as e:
-        return render_template('error.html',error = str(e))
-    finally:
-        cursor.close()
-        con.close()
 
-@app.route('/increaseProductQuantityInCart',methods=['POST'])
-def increaseProductQuantityInCart():
-    try :
+@app.route('/deleteProductFromCart', methods=['POST'])
+def deleteProductFromCart():
+    try:
         con = mysql.connect()
         cursor = con.cursor()
         # read the posted values from the UI
         requestBody = request.get_json()
         _productId = requestBody['productId']
-        _quantity = requestBody['quantity']        
         # validate the received values
-        if _productId and _quantity:
-            cursor.execute("UPDATE CART SET QUANTITY = %s WHERE product_id = %s", (_quantity,_productId))
+        if _productId:
+            cursor.execute(
+                "DELETE FROM cart WHERE product_id = %s", (_productId))
             data = cursor.fetchall()
             if len(data) == 0:
                 con.commit()
-                return json.dumps({'update':'successful'})
+                return json.dumps({'delete': 'successful'})
             else:
-                return json.dumps({'error':str(data[0])})
+                return json.dumps({'error': str(data[0])})
         else:
-            return json.dumps({'html':'<span> Product ID or Quanity to change from cart not received. </span>'})
+            return json.dumps({'html': '<span> Product ID to from Cart not received. </span>'})
     except Exception as e:
-        return render_template('error.html',error = str(e))
+        return render_template('error.html', error=str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+
+@app.route('/increaseProductQuantityInCart', methods=['POST'])
+def increaseProductQuantityInCart():
+    try:
+        con = mysql.connect()
+        cursor = con.cursor()
+        # read the posted values from the UI
+        requestBody = request.get_json()
+        _productId = requestBody['productId']
+        _quantity = requestBody['quantity']
+        # validate the received values
+        if _productId and _quantity:
+            cursor.execute(
+                "UPDATE CART SET QUANTITY = %s WHERE product_id = %s", (_quantity, _productId))
+            data = cursor.fetchall()
+            if len(data) == 0:
+                con.commit()
+                return json.dumps({'update': 'successful'})
+            else:
+                return json.dumps({'error': str(data[0])})
+        else:
+            return json.dumps({'html': '<span> Product ID or Quanity to change from cart not received. </span>'})
+    except Exception as e:
+        return render_template('error.html', error=str(e))
     finally:
         cursor.close()
         con.close()
@@ -347,10 +386,10 @@ def signUp():
 
     # read the form data
     _firstname = request.form['firstName']
-    _lastname =  request.form['lastName']
-    _email =  request.form['inputEmail']
-    _contactNumber =  request.form['contactNumber']
-    _password =  request.form['inputPassword']
+    _lastname = request.form['lastName']
+    _email = request.form['inputEmail']
+    _contactNumber = request.form['contactNumber']
+    _password = request.form['inputPassword']
     # validate the form data
     if _firstname and _lastname and _email and _contactNumber and _password:
 
@@ -483,6 +522,95 @@ def deleteTheTodolist():
                 return render_template('error.html', error="An error occured!")
     except Exception as e:
         return render_template('error.html', error=str(e))
+
+
+#
+# Retrieve category end point
+#
+
+@app.route('/categories', methods=['GET'])
+def categories():
+    try:
+        if session.get('user'):
+            _user = session.get('user')
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT distinct category from product")
+
+            data = cursor.fetchall()
+            return json.dumps(data)
+        else:
+            return render_template('error.html', error="Unauthorized Access")
+    except Exception as e:
+        return render_template('error.html', error=str(e))
+
+
+@app.route('/searchProducts', methods=['POST'])
+def searchProducts():
+    try:
+
+        filterValues = []
+
+        baseQuery = 'SELECT * FROM product WHERE is_deleted = 0 '
+
+        if request.form['searchText'] != '*' and request.form['searchText'] != '':
+            baseQuery += 'AND (title like %s OR description like %s) '
+            filterValues.extend(
+                (('%'+request.form['searchText'].lower()+'%'), ('%'+request.form['searchText'].lower()+'%')))
+
+        # If the user wants all item
+        if request.form['category'] != '*' and request.form['category'] != '':
+            baseQuery += 'AND category = %s '
+            filterValues.append(request.form['category'])
+
+        if request.form['price'] != '*' and request.form['price'] != '':
+             if request.form['price'] == '100':
+                baseQuery += 'AND (price > %s)'
+                filterValues.append(100)
+             else:
+                baseQuery += 'AND  (price between %s AND %s)'
+                filterValues.extend((request.form['price'].split('-')))
+
+        if request.form['quantity'] != '*' and request.form['quantity'] != '':
+            if request.form['quantity'] == '10':
+                baseQuery += 'AND (quantity > %s)'
+                filterValues.append(10)
+            else:
+                baseQuery += 'AND  (quantity between %s AND %s)'
+                filterValues.extend((request.form['quantity'].split('-')))
+        
+
+        if type(request.args.get('pageNumber')) != type(None) :
+            print (type(request.args.get('pageNumber')),'Value:',request.args.get('pageNumber'))
+        # request.args.get('pageNumber') is not None: 
+            pageNumber = int(request.args.get('pageNumber'))
+            startingElement = 0 if 10*(pageNumber-1)-1 < 0 else 10*(pageNumber-1)-1
+            lastElement =  9 if startingElement == 0 else 10*(pageNumber)-1
+            baseQuery += ' order by product_id LIMIT %s,%s '
+            filterValues.extend((startingElement, lastElement))
+        
+        con = mysql.connect()
+        cursor = con.cursor()
+        print(baseQuery,filterValues)
+
+        cursor.execute(baseQuery,
+                       (filterValues))
+
+        data = cursor.fetchall()
+        print(cursor._last_executed)
+
+        if len(data) > 0:
+            return json.dumps(data)
+        else:
+            return json.dumps({'html': '<span> No Products in the database </span>'})
+
+    except Exception as e:
+        return render_template('error.html', error=str(e))
+    finally:
+        cursor.close()
+        con.close()
 
 
 # Run the app
