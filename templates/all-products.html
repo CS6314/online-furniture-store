@@ -28,12 +28,14 @@
     <link rel="stylesheet" href="/static/css/responsive.css">
     <!-- User style -->
     <link rel="stylesheet" href="/static/css/custom.css">
-
+    <link rel="stylesheet" href="/static/css/pagination.css">
 
     <!-- Modernizr JS -->
+    
     <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/static/js/all-products.js"></script>
+    
 </head>
 
 <body>
@@ -181,12 +183,64 @@
         <!-- cart-main-area start -->
         <div class="cart-main-area ptb--120 bg__white">
             <div class="container">
+                
                 <div class="row">
+                    <div class="col-md-12" style="margin-bottom:10px">
+                        
+                        <div class="container">
+                            <div class="row" id="search">
+                                <form id="search-form" >
+                                    <div class="form-group col-xs-9">
+                                        <input class="form-control" type="text" placeholder="Search" name="searchText" id="searchText"/>
+                                    </div>
+                                    <div class="form-group col-xs-3">
+                                        <button type="submit" class="btn btn-block btn-primary" id='searchButton'>Search</button>
+                                    </div>
+                                    <div class="form-group col-sm-3 col-xs-6">
+                                        <select data-filter="make" class="filter-make filter form-control" id="category" name= "category" aria-placeholder="Category" id="category">
+                                            <option value="*">Select Category</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-3 col-xs-6">
+                                        <select data-filter="model" class="filter-model filter form-control" name="price" id="price">
+                                            <option value="*">Select Price Range</option>
+                                            <option value="10-50">10 - 50</option>
+                                            <option value="50-100">50 - 100</option>
+                                            <option value="100">100 +</option>
+                                            <option value="*">Show All</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-3 col-xs-6">
+                                        <select data-filter="type" class="filter-type filter form-control" name="quantity" id="quantity">
+                                            <option value="*">Select Quantity</option>
+                                            <option value="1-5">1 - 5</option>
+                                            <option value="5-10">5 - 10</option>
+                                            <option value="10">10 +</option>
+                                            <option value="*">Show All</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row" id="filter">
+                             
+                            </div>
+                            <div class="row" id="products">
+                                
+                            </div>
+                            <!-- <div class="container">
+                               
+                            </div> -->
+                            
+                        </div>
+                        
+                    </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <form action="#">               
+                        <!-- <form action="#">               
                             <div class="table-content table-responsive">
                                 <table>
                                     <thead>
+                                        
                                         <tr>
                                             <th class="product-thumbnail">Image</th>
                                             <th class="product-name">Product</th>
@@ -202,11 +256,18 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="editForm">
+                            
+                        </form>  -->
+                        <div id="editForm">
 
+                        </div>
+                        <div class="center" >
+                            <div class="pagination" id="pagination-container">
+                            
                             </div>
-                        </form> 
+                          </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
