@@ -5,6 +5,7 @@ import views
 from flask import session
 import os
 from werkzeug.utils import secure_filename
+import cryptocode
 
 UPLOAD_FOLDER = 'static\images\product'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -17,7 +18,7 @@ mysql = MySQL()
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'akash123'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
 app.config['MYSQL_DATABASE_DB'] = 'furniture_store'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['MYSQL_DATABASE_PORT'] = 3306
@@ -390,12 +391,13 @@ def validateLogin():
         data = cursor.fetchall()
 
         if len(data) > 0:
-            session['isAdmin']=data[0][6]
-            if str(data[0][5]) == _password and data[0][6] == 0:
+            _decryptedPassword = cryptocode.decrypt(str(data[0][5]),"ecryptionDecryptionKey")
+            if _decryptedPassword == _password and data[0][6] == 0:
                 session['user'] = data[0][0]
                 return redirect('/userHome')
-            if str(data[0][5]) == _password:
+            if _decryptedPassword == _password:
                 session['user'] = data[0][0]
+                session['isAdmin'] = 1
                 return redirect('/adminHome')
             else:
                 return render_template('error.html', error='Wrong Email address or Password.')
@@ -422,6 +424,7 @@ def signUp():
     _email = request.form['email']
     _contactNumber = request.form['contactNumber']
     _password = request.form['password']
+    _encryptedPassword = cryptocode.encrypt(_password,"ecryptionDecryptionKey")
     # validate the form data
     if _firstname and _lastname and _email and _contactNumber and _password:
 
@@ -438,7 +441,7 @@ def signUp():
 
         # Pass the SQL statement
         cursor.execute(
-            "INSERT INTO user(email, fname, lname, contact, password) VALUES (%s, %s, %s, %s,%s)", (_email, _firstname, _lastname, _contactNumber, _password))
+            "INSERT INTO user(email, fname, lname, contact, password) VALUES (%s, %s, %s, %s,%s)", (_email, _firstname, _lastname, _contactNumber, _encryptedPassword))
 
         # Confirm its inserted properly
         data = cursor.fetchall()
